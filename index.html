@@ -21,40 +21,42 @@
       font-family: 'Arial Black', Gadget, sans-serif;
     }
 
-    /* Contenedor adaptado a la imagen de Canva */
+    /* Imagen de Canva adaptada a la pantalla */
     .menu-container {
       position: relative;
       width: 100vw;
-      height: 56.25vw; /* Proporción 16:9 para TV */
+      height: 56.25vw; /* Mantiene proporción 16:9 para TV */
       max-height: 100vh;
       max-width: 177.78vh;
-      background-image: url('fondo.jpg'); /* Nombre de la imagen de Canva subida a GitHub */
+      background-image: url('fondo.jpg'); /* Carga tu imagen de Canva */
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
     }
 
-    /* Estilo visual de los precios */
+    /* Estilo de los precios */
     .precio {
       position: absolute;
       color: #ffffff;
-      font-size: 2vw;
+      font-size: 2.2vw;
       font-weight: bold;
       text-align: center;
       transform: translate(-50%, -50%);
     }
 
-    /* Coordenadas para superponer cada precio sobre la plantilla */
+    /* POSICIONAMIENTO SOBRE EL DISEÑO DE CANVA */
+    /* Sección Perros (Izquierda) */
     #perro_sencillo        { top: 16.5%; left: 35.5%; }
     #combo_5_perros        { top: 35.0%; left: 35.5%; }
     #combo_10_perros       { top: 52.0%; left: 35.5%; }
     #perro_especial        { top: 67.0%; left: 35.5%; }
 
-    #criolla               { top: 16.5%; left: 68.0%; color: #800000; }
-    #americana             { top: 30.5%; left: 68.0%; color: #800000; }
-    #americana_bacon       { top: 44.5%; left: 68.0%; color: #800000; }
-    #americana_bacon_doble  { top: 58.5%; left: 68.0%; color: #800000; }
-    #callejera             { top: 72.5%; left: 68.0%; color: #800000; }
+    /* Sección Hamburguesas (Derecha - Texto en guinda/rojo) */
+    #criolla               { top: 16.5%; left: 68.0%; color: #6b0000; }
+    #americana             { top: 30.5%; left: 68.0%; color: #6b0000; }
+    #americana_bacon       { top: 44.5%; left: 68.0%; color: #6b0000; }
+    #americana_bacon_doble  { top: 58.5%; left: 68.0%; color: #6b0000; }
+    #callejera             { top: 72.5%; left: 68.0%; color: #6b0000; }
   </style>
 </head>
 <body>
@@ -73,7 +75,6 @@
   </div>
 
   <script>
-    // PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT
     const API_URL = "https://script.google.com/macros/s/AKfycbwZKhKm9VunjgA5kJ3XLS_JIKDLi2aEqcFvwnS8D3pgqAx0FgmhCqAaBQ1LM5FOJn7M/exec";
 
     async function actualizarPrecios() {
@@ -84,8 +85,8 @@
         datos.forEach(item => {
           const elemento = document.getElementById(item.id);
           if (elemento) {
-            // Si la hoja trae símbolo o formato lo pone, si no le antepone el $
-            elemento.innerText = item.precio.includes('$') ? item.precio : '$ ' + item.precio;
+            // Lee el precio directo de tu hoja
+            elemento.innerText = item.precio;
           }
         });
       } catch (err) {
@@ -94,7 +95,7 @@
     }
 
     actualizarPrecios();
-    setInterval(actualizarPrecios, 20000); // Se actualiza cada 20 segundos
+    setInterval(actualizarPrecios, 20000);
   </script>
 </body>
 </html>
