@@ -41,39 +41,41 @@
       transform: translate(-50%, -50%);
     }
 
-    /* Perros */
+    /* Perros (Centrados en las pastillas rojas) */
     .precio-perro {
       color: #ffffff;
     }
-    #perro_sencillo        { top: 21.0%; left: 38.3%; }
-    #combo_5_perros        { top: 39.0%; left: 38.3%; }
-    #combo_10_perros       { top: 55.5%; left: 38.3%; }
-    #perro_especial        { top: 69.5%; left: 38.3%; }
+    #perro_sencillo        { top: 21.0%; left: 35.0%; }
+    #combo_5_perros        { top: 39.0%; left: 35.0%; }
+    #combo_10_perros       { top: 55.5%; left: 35.0%; }
+    #perro_especial        { top: 69.5%; left: 35.0%; }
 
-    /* Hamburguesas */
+    /* Hamburguesas (A la izquierda de cada título) */
     .precio-hamburguesa {
       color: #9c0226;
     }
-    #criolla               { top: 21.0%; left: 65.5%; }
-    #americana             { top: 32.5%; left: 65.5%; }
-    #americana_bacon       { top: 47.0%; left: 65.5%; }
-    #americana_bacon_doble { top: 61.0%; left: 65.5%; }
-    #callejera             { top: 74.0%; left: 65.5%; }
+    #criolla               { top: 21.0%; left: 60.5%; }
+    #americana             { top: 32.5%; left: 60.5%; }
+    #americana_bacon       { top: 47.0%; left: 60.5%; }
+    #americana_bacon_doble { top: 61.0%; left: 60.5%; }
+    #callejera             { top: 74.0%; left: 60.5%; }
   </style>
 </head>
 <body>
 
   <div class="menu-container">
-    <div id="perro_sencillo" class="precio"></div>
-    <div id="combo_5_perros" class="precio"></div>
-    <div id="combo_10_perros" class="precio"></div>
-    <div id="perro_especial" class="precio"></div>
+    <!-- Perros -->
+    <div id="perro_sencillo" class="precio precio-perro"></div>
+    <div id="combo_5_perros" class="precio precio-perro"></div>
+    <div id="combo_10_perros" class="precio precio-perro"></div>
+    <div id="perro_especial" class="precio precio-perro"></div>
 
-    <div id="criolla" class="precio"></div>
-    <div id="americana" class="precio"></div>
-    <div id="americana_bacon" class="precio"></div>
-    <div id="americana_bacon_doble" class="precio"></div>
-    <div id="callejera" class="precio"></div>
+    <!-- Hamburguesas -->
+    <div id="criolla" class="precio precio-hamburguesa"></div>
+    <div id="americana" class="precio precio-hamburguesa"></div>
+    <div id="americana_bacon" class="precio precio-hamburguesa"></div>
+    <div id="americana_bacon_doble" class="precio precio-hamburguesa"></div>
+    <div id="callejera" class="precio precio-hamburguesa"></div>
   </div>
 
   <script>
@@ -87,7 +89,6 @@
         datos.forEach(item => {
           const elemento = document.getElementById(item.id);
           if (elemento) {
-            // Lee el precio directo de tu hoja
             elemento.innerText = item.precio;
           }
         });
