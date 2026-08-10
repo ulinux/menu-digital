@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menú Digital</title>
+  <style>
+    /* CSS: Estilos visuales para Pantalla/TV */
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #f39c12;
+      font-size: 3rem;
+      margin-bottom: 30px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .card {
+      background: #1e1e1e;
+      border-radius: 12px;
+      padding: 25px;
+      border-left: 6px solid #f39c12;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card h2 {
+      margin: 0 0 10px 0;
+      font-size: 1.8rem;
+      color: #fff;
+    }
+
+    .card p {
+      margin: 0 0 15px 0;
+      color: #aaa;
+      font-size: 1.1rem;
+    }
+
+    .precio {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #2ecc71;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Nuestros Productos</h1>
+  <div class="grid-container" id="menu-container">
+    <!-- Aquí se cargan los productos desde Google Sheets -->
+  </div>
+
+  <script>
+    // REEMPLAZA ESTA URL CON LA TUYA DE GOOGLE APPS SCRIPT
+    const API_URL = https://script.google.com/macros/s/AKfycbwZKhKm9VunjgA5kJ3XLS_JIKDLi2aEqcFvwnS8D3pgqAx0FgmhCqAaBQ1LM5FOJn7M/exec
+;
+
+    async function cargarMenu() {
+      try {
+        const respuesta = await fetch(API_URL);
+        const datos = await respuesta.json();
+        
+        const contenedor = document.getElementById('menu-container');
+        contenedor.innerHTML = ''; // Limpiar previo
+
+        datos.forEach(item => {
+          const tarjeta = document.createElement('div');
+          tarjeta.className = 'card';
+          tarjeta.innerHTML = `
+            <div>
+              <h2>${item.producto}</h2>
+              <p>${item.detalles}</p>
+            </div>
+            <div class="precio">${item.precio}</div>
+          `;
+          contenedor.appendChild(tarjeta);
+        });
+      } catch (error) {
+        console.error("Error al cargar los datos:", error);
+      }
+    }
+
+    // Cargar los datos de inmediato
+    cargarMenu();
+
+    // Actualizar datos automáticamente cada 30 segundos (30000 ms)
+    setInterval(cargarMenu, 30000);
+  </script>
+</body>
+</html>
