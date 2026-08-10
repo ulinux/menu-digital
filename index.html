@@ -3,109 +3,98 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menú Digital</title>
+  <title>Menú Food Manía</title>
   <style>
-    /* CSS: Estilos visuales para Pantalla/TV */
-    body {
-      background-color: #121212;
-      color: #ffffff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    * {
+      box-sizing: border-box;
       margin: 0;
-      padding: 40px;
+      padding: 0;
+    }
+
+    body {
+      background-color: #000;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+      font-family: 'Arial Black', Gadget, sans-serif;
     }
 
-    h1 {
-      color: #f39c12;
-      font-size: 3rem;
-      margin-bottom: 30px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
+    /* Contenedor adaptado a la imagen de Canva */
+    .menu-container {
+      position: relative;
+      width: 100vw;
+      height: 56.25vw; /* Proporción 16:9 para TV */
+      max-height: 100vh;
+      max-width: 177.78vh;
+      background-image: url('fondo.jpg'); /* Nombre de la imagen de Canva subida a GitHub */
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
     }
 
-    .grid-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 25px;
-      width: 100%;
-      max-width: 1200px;
-    }
-
-    .card {
-      background: #1e1e1e;
-      border-radius: 12px;
-      padding: 25px;
-      border-left: 6px solid #f39c12;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .card h2 {
-      margin: 0 0 10px 0;
-      font-size: 1.8rem;
-      color: #fff;
-    }
-
-    .card p {
-      margin: 0 0 15px 0;
-      color: #aaa;
-      font-size: 1.1rem;
-    }
-
+    /* Estilo visual de los precios */
     .precio {
-      font-size: 2.2rem;
+      position: absolute;
+      color: #ffffff;
+      font-size: 2vw;
       font-weight: bold;
-      color: #2ecc71;
-      text-align: right;
+      text-align: center;
+      transform: translate(-50%, -50%);
     }
+
+    /* Coordenadas para superponer cada precio sobre la plantilla */
+    #perro_sencillo        { top: 16.5%; left: 35.5%; }
+    #combo_5_perros        { top: 35.0%; left: 35.5%; }
+    #combo_10_perros       { top: 52.0%; left: 35.5%; }
+    #perro_especial        { top: 67.0%; left: 35.5%; }
+
+    #criolla               { top: 16.5%; left: 68.0%; color: #800000; }
+    #americana             { top: 30.5%; left: 68.0%; color: #800000; }
+    #americana_bacon       { top: 44.5%; left: 68.0%; color: #800000; }
+    #americana_bacon_doble  { top: 58.5%; left: 68.0%; color: #800000; }
+    #callejera             { top: 72.5%; left: 68.0%; color: #800000; }
   </style>
 </head>
 <body>
 
-  <h1>Nuestros Productos</h1>
-  <div class="grid-container" id="menu-container">
-    <!-- Aquí se cargan los productos desde Google Sheets -->
+  <div class="menu-container">
+    <div id="perro_sencillo" class="precio"></div>
+    <div id="combo_5_perros" class="precio"></div>
+    <div id="combo_10_perros" class="precio"></div>
+    <div id="perro_especial" class="precio"></div>
+
+    <div id="criolla" class="precio"></div>
+    <div id="americana" class="precio"></div>
+    <div id="americana_bacon" class="precio"></div>
+    <div id="americana_bacon_doble" class="precio"></div>
+    <div id="callejera" class="precio"></div>
   </div>
 
   <script>
-    // REEMPLAZA ESTA URL CON LA TUYA DE GOOGLE APPS SCRIPT
-    const API_URL = "https://script.google.com/macros/s/AKfycbwZKhKm9VunjgA5kJ3XLS_JIKDLi2aEqcFvwnS8D3pgqAx0FgmhCqAaBQ1LM5FOJn7M/exec"
-;
+    // PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT
+    const API_URL = "https://script.google.com/macros/s/AKfycbwZKhKm9VunjgA5kJ3XLS_JIKDLi2aEqcFvwnS8D3pgqAx0FgmhCqAaBQ1LM5FOJn7M/exec";
 
-    async function cargarMenu() {
+    async function actualizarPrecios() {
       try {
-        const respuesta = await fetch(API_URL);
-        const datos = await respuesta.json();
-        
-        const contenedor = document.getElementById('menu-container');
-        contenedor.innerHTML = ''; // Limpiar previo
+        const res = await fetch(API_URL);
+        const datos = await res.json();
 
         datos.forEach(item => {
-          const tarjeta = document.createElement('div');
-          tarjeta.className = 'card';
-          tarjeta.innerHTML = `
-            <div>
-              <h2>${item.producto}</h2>
-              <p>${item.detalles}</p>
-            </div>
-            <div class="precio">${item.precio}</div>
-          `;
-          contenedor.appendChild(tarjeta);
+          const elemento = document.getElementById(item.id);
+          if (elemento) {
+            // Si la hoja trae símbolo o formato lo pone, si no le antepone el $
+            elemento.innerText = item.precio.includes('$') ? item.precio : '$ ' + item.precio;
+          }
         });
-      } catch (error) {
-        console.error("Error al cargar los datos:", error);
+      } catch (err) {
+        console.error("Error al actualizar precios:", err);
       }
     }
 
-    // Cargar los datos de inmediato
-    cargarMenu();
-
-    // Actualizar datos automáticamente cada 30 segundos (30000 ms)
-    setInterval(cargarMenu, 30000);
+    actualizarPrecios();
+    setInterval(actualizarPrecios, 20000); // Se actualiza cada 20 segundos
   </script>
 </body>
 </html>
